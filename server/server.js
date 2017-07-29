@@ -50,21 +50,25 @@ app.get('/todos/:id',(req,res)=>{
 
   
 })
-app.delete('/todos/:id', async (req,res)=>{
+app.delete('/todos/:id', (req,res)=>{
   const id = req.params.id
   if(!ObjectID.isValid(id)){
     return res.status(404).send()
   }
-  try {
-    const result = await Todo.findByIdAndRemove({_id:id})
-    if(!result){
+ 
+    Todo.findByIdAndRemove({_id:id}).then(result=>{
+      if(!result){
       return res.status(404).send()
     }
-    res.json(result)
+      res.json(result)
+    }).catch(e=>{
+        res.status(400).send()
+    })
     
-  } catch (error) {
-    res.status(400).send()
-  }
+    
+ 
+    
+  
   
 })
 
