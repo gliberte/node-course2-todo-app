@@ -35,16 +35,19 @@ app.get('/todos',(req,res)=>{
     })
   })
 })
-app.get('/todos/:id',async (req,res)=>{
-  try {
-    const todo = await Todo.findOne({_id:req.params.id})
-    res.json({todo})
-  } catch (error) {
-    res.status(400).json({
+app.get('/todos/:id',(req,res)=>{
+
+    Todo.findOne({_id:req.params.id}).then((todo)=>{
+      res.json({todo})
+    }).catch(e=>{
+      res.status(400).json({
       err:true,
       mensaje:error.message
     })
-  }
+    })
+    
+
+
   
 })
 app.delete('/todos/:id', async (req,res)=>{
